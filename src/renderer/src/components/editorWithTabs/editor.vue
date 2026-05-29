@@ -763,14 +763,21 @@ const replaceMisspelling = (payload: unknown) => {
   }
 }
 
+const canEdit = (): boolean => {
+  // Allow editing if:
+  // 1. Document is not locked, OR
+  // 2. Document is locked but we're in source code mode
+  return !currentFile.value?.isLocked || sourceCode.value
+}
+
 const handleUndo = () => {
-  if (editor.value) {
+  if (editor.value && canEdit()) {
     editor.value.undo()
   }
 }
 
 const handleRedo = () => {
-  if (editor.value) {
+  if (editor.value && canEdit()) {
     editor.value.redo()
   }
 }
@@ -796,13 +803,22 @@ const handleSelectAll = () => {
 
 // Custom copyAsRich copyAsHtml pasteAsPlainText
 const handleCopyPaste = (type: unknown) => {
+  // Only allow paste operations if editing is permitted
   if (editor.value) {
-    editor.value[type as string]()
+    const operation = type as string
+    if (operation === 'pasteAsPlainText') {
+      if (canEdit()) {
+        editor.value[operation]()
+      }
+    } else {
+      // copy operations are always allowed
+      editor.value[operation]()
+    }
   }
 }
 
 const insertImage = (src: unknown) => {
-  if (!sourceCode.value) {
+  if (!sourceCode.value && canEdit()) {
     editor.value && editor.value.insertImage({ src })
   }
 }
@@ -815,14 +831,18 @@ const handleSearch = (payload: unknown) => {
 }
 
 const handReplace = (payload: unknown) => {
-  const { value, opt } = payload as { value: string; opt: unknown }
-  const searchMatches = editor.value.replace(value, opt)
-  editorStore.SEARCH(searchMatches)
+  if (canEdit()) {
+    const { value, opt } = payload as { value: string; opt: unknown }
+    const searchMatches = editor.value.replace(value, opt)
+    editorStore.SEARCH(searchMatches)
+  }
 }
 
 const handleUploadedImage = (url: unknown, deletionUrl?: unknown) => {
-  insertImage(url)
-  editorStore.SHOW_IMAGE_DELETION_URL(deletionUrl as string)
+  if (canEdit()) {
+    insertImage(url)
+    editorStore.SHOW_IMAGE_DELETION_URL(deletionUrl as string)
+  }
 }
 
 const scrollToCursor = (duration = 300) => {
@@ -993,20 +1013,22 @@ const handlePrintServiceClearup = () => {
 
 const handleEditParagraph = (type: unknown) => {
   if (type === 'table') {
-    tableChecker.rows = 4
-    tableChecker.columns = 3
-    dialogTableVisible.value = true
-    nextTick(() => {
-      rowInput.value?.focus()
-    })
-  } else if (editor.value) {
+    if (canEdit()) {
+      tableChecker.rows = 4
+      tableChecker.columns = 3
+      dialogTableVisible.value = true
+      nextTick(() => {
+        rowInput.value?.focus()
+      })
+    }
+  } else if (editor.value && canEdit()) {
     editor.value.updateParagraph(type)
   }
 }
 
 // handle `duplicate`, `delete`, `create paragraph below`
 const handleParagraph = (type: unknown) => {
-  if (editor.value) {
+  if (editor.value && canEdit()) {
     switch (type) {
       case 'duplicate': {
         return editor.value.duplicate()
@@ -1024,12 +1046,16 @@ const handleParagraph = (type: unknown) => {
 }
 
 const handleInlineFormat = (type: unknown) => {
-  editor.value && editor.value.format(type)
+  if (editor.value && canEdit()) {
+    editor.value.format(type)
+  }
 }
 
 const handleDialogTableConfirm = () => {
   dialogTableVisible.value = false
-  editor.value && editor.value.createTable(tableChecker)
+  if (canEdit()) {
+    editor.value && editor.value.createTable(tableChecker)
+  }
 }
 
 interface FileLoadedPayload {
@@ -1097,7 +1123,9 @@ const handleFileChange = (payload: unknown) => {
 }
 
 const handleInsertParagraph = (location: unknown) => {
-  editor.value && editor.value.insertParagraph(location)
+  if (canEdit()) {
+    editor.value && editor.value.insertParagraph(location)
+  }
 }
 
 const blurEditor = () => {
@@ -1255,13 +1283,7 @@ onMounted(() => {
 
     // Check if document is locked and not in source code mode
     if (currentFile.value.isLocked && !sourceCode.value) {
-      notice.notify({
-        title: t('editor.documentLocked'),
-        message: t('editor.documentLockedMessage'),
-        type: 'warning',
-        duration: 3000
-      })
-      // Restore the original content to prevent changes
+      // Restore the original content to prevent changes without showing notice
       if (currentFile.value.markdown !== editor.value.getMarkdown()) {
         editor.value.setMarkdown(currentFile.value.markdown)
       }

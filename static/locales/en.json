@@ -1116,7 +1116,10 @@
       "fileRemovedOnDisk": "\"{name}\" has been removed on disk.",
       "fileChangedOnDisk": "\"{name}\" has been changed on disk. Do you want to reload it?",
       "documentLocked": "Document Locked",
-      "documentLockedMessage": "Document is locked. Only editable in source code mode."
+      "documentLockedMessage": "Document is locked. Only editable in source code mode.",
+      "documentUnlocked": "Document Unlocked",
+      "documentLockedSuccess": "\"{filename}\" has been locked. Only editable in source code mode.",
+      "documentUnlockedSuccess": "\"{filename}\" has been unlocked. Editable in any mode."
     }
   },
   "spellchecker": {

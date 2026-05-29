@@ -1134,8 +1134,16 @@ export const useEditorStore = defineStore('editor', {
 
       const tab = this.tabs.find((t) => t.id === id)
       if (tab) {
-        tab.isLocked = !tab.isLocked
+        const newLockState = !tab.isLocked
+        tab.isLocked = newLockState
         debouncedSendBufferedState()
+        
+        // Emit event for toast notification
+        bus.emit('mt::document-lock-changed', {
+          id: tab.id,
+          isLocked: newLockState,
+          filename: tab.filename
+        })
       }
     },
 

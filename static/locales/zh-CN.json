@@ -1118,7 +1118,10 @@
       "fileRemovedOnDisk": "“{name}” 已在磁盘上被删除。",
       "fileChangedOnDisk": "“{name}” 已在磁盘上发生变更。是否重新加载？",
       "documentLocked": "文档已锁定",
-      "documentLockedMessage": "文档已锁定，仅在源码模式下可编辑。"
+      "documentLockedMessage": "文档已锁定，仅在源码模式下可编辑。",
+      "documentUnlocked": "文档已解锁",
+      "documentLockedSuccess": "“{filename}” 已锁定，仅在源码模式下可编辑。",
+      "documentUnlockedSuccess": "“{filename}” 已解锁，可在任意模式下编辑。"
     }
   },
   "spellchecker": {

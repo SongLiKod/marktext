@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, nextTick, onMounted, ref } from 'vue'
+import { computed, watch, nextTick, onMounted, ref, onBeforeUnmount } from 'vue'
 import { useMainStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { addStyles, addThemeStyle, addCustomStyle, type AddStylesOptions } from '@/util/theme'
@@ -61,6 +61,8 @@ import { useCommandCenterStore } from '@/store/commandCenter'
 import { useProjectStore } from '@/store/project'
 import { useAutoUpdatesStore } from '@/store/autoUpdates'
 import { useNotificationStore } from '@/store/notification'
+import { useI18n } from 'vue-i18n'
+import notice from '@/services/notification'
 
 const mainStore = useMainStore()
 const editorStore = useEditorStore()
@@ -71,6 +73,7 @@ const listenForMainStore = useListenForMainStore()
 const autoUpdateStore = useAutoUpdatesStore()
 const commandCenterStore = useCommandCenterStore()
 const notificationStore = useNotificationStore()
+const { t } = useI18n()
 
 const timer = ref<ReturnType<typeof setTimeout> | null>(null)
 
@@ -197,6 +200,18 @@ onMounted(async () => {
   notificationStore.listenForNotification()
 
   setupDragDropHandler()
+
+    // Listen for document lock state changes
+    bus.on('mt::document-lock-changed', ({ isLocked, filename }: { isLocked: boolean; filename: string }) => {
+      notice.notify({
+        title: isLocked ? t('editor.documentLocked') : t('editor.documentUnlocked'),
+        message: isLocked 
+          ? t('editor.documentLockedSuccess', { filename }) 
+          : t('editor.documentUnlockedSuccess', { filename }),
+        type: isLocked ? 'info' : 'success',
+        duration: 2000
+      })
+    })
 
   nextTick(() => {
     // `initialState` from bootstrap carries nullable URL params (string|null);
