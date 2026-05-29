@@ -64,6 +64,54 @@ export const zoomOptions: PrefSelectOption<number>[] = [
   {
     label: '200.0%',
     value: 2.0
+  },
+  {
+    label: '225.0%',
+    value: 2.25
+  },
+  {
+    label: '250.0%',
+    value: 2.5
+  },
+  {
+    label: '275.0%',
+    value: 2.75
+  },
+  {
+    label: '300.0%',
+    value: 3.0
+  },
+  {
+    label: '325.0%',
+    value: 3.25
+  },
+  {
+    label: '350.0%',
+    value: 3.5
+  },
+  {
+    label: '375.0%',
+    value: 3.75
+  },
+  {
+    label: '400.0%',
+    value: 4.0
+  },
+  {
+    label: '425.0%',
+    value: 4.25
+  },
+  {
+    label: '450.0%',
+    value: 4.5
+  },
+  {
+    label: '475.0%',
+    value: 4.75
+  },
+  {
+    label: '500.0%',
+    value: 5.0
   }
 ]
 
