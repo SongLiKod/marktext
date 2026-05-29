@@ -33,6 +33,11 @@ export interface NotifyOptions {
   showConfirm?: boolean
 }
 
+export interface ToastOptions {
+  message: string
+  time?: number
+}
+
 interface NoticeCacheEntry {
   remove: () => void
 }
@@ -42,6 +47,7 @@ interface NotificationService {
   noticeCache: Record<string, NoticeCacheEntry>
   clear(): void
   notify(opts: NotifyOptions): Promise<void>
+  toast(opts: ToastOptions): void
 }
 
 const notification: NotificationService = {
@@ -187,6 +193,36 @@ const notification: NotificationService = {
       rs = resolve
       rj = reject
     })
+  },
+  toast({ message, time = 2000 }: ToastOptions): void {
+    const id = getUniqueId()
+    let timer: ReturnType<typeof setTimeout> | null = null
+
+    const toastElement = document.createElement('div')
+    toastElement.className = 'mt-toast'
+    toastElement.textContent = message
+
+    const remove = (): void => {
+      toastElement.style.opacity = '0'
+      toastElement.style.transform = 'translateY(-20px)'
+      setTimeout(() => {
+        toastElement.remove()
+        if (notification.noticeCache[id]) {
+          delete notification.noticeCache[id]
+        }
+      }, 300)
+    }
+
+    notification.noticeCache[id] = { remove }
+
+    document.body.appendChild(toastElement)
+
+    setTimeout(() => {
+      toastElement.style.opacity = '1'
+      toastElement.style.transform = 'translateY(0)'
+    }, 50)
+
+    timer = setTimeout(remove, time)
   }
 }
 

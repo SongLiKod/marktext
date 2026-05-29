@@ -1643,11 +1643,9 @@ export const useEditorStore = defineStore('editor', {
       }
       window.electron.webFrame.setZoomFactor(zoomFactor)
       const zoomPercent = Math.round(zoomFactor * 100)
-      notice.notify({
-        title: t('preferences.general.window.zoom'),
+      notice.toast({
         message: `${zoomPercent}%`,
-        type: 'info',
-        time: 2000
+        time: 1500
       })
     },
 
