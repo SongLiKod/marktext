@@ -116,6 +116,7 @@ const keybindings: Map<string, string> = new Map([
   ['tabs.switchToEighth', 'Ctrl+8'],
   ['tabs.switchToNinth', 'Ctrl+9'],
   ['tabs.switchToTenth', 'Ctrl+0'],
+  ['tabs.toggle-lock', 'Command+Shift+L'],
   ['file.quick-open', 'Command+P']
 ])
 

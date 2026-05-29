@@ -1032,7 +1032,8 @@
       "switchToSeventh": "切换到第七个",
       "switchToEighth": "切换到第八个",
       "switchToNinth": "切换到第九个",
-      "switchToTenth": "切换到第十个"
+      "switchToTenth": "切换到第十个",
+      "toggleLock": "切换文档锁定"
     },
     "docs": {
       "userGuide": "用户指南",
@@ -1115,7 +1116,9 @@
       "exportSuccessTitle": "导出成功",
       "exportSuccessMessage": "已成功导出“{name}”！",
       "fileRemovedOnDisk": "“{name}” 已在磁盘上被删除。",
-      "fileChangedOnDisk": "“{name}” 已在磁盘上发生变更。是否重新加载？"
+      "fileChangedOnDisk": "“{name}” 已在磁盘上发生变更。是否重新加载？",
+      "documentLocked": "文档已锁定",
+      "documentLockedMessage": "文档已锁定，仅在源码模式下可编辑。"
     }
   },
   "spellchecker": {

@@ -205,6 +205,7 @@ const COMMAND_KEY_MAP: Record<string, string> = {
   'tabs.switchToEighth': 'commands.tabs.switchToEighth',
   'tabs.switchToNinth': 'commands.tabs.switchToNinth',
   'tabs.switchToTenth': 'commands.tabs.switchToTenth',
+  'tabs.toggle-lock': 'commands.tabs.toggleLock',
 
   // ============================================
   // # Documentation & Help

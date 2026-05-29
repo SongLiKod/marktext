@@ -1252,6 +1252,22 @@ onMounted(() => {
     // There is a chance that this event is fired AFTER the tab is switched. If we purely rely on this.currentFile later on
     // it can cause invalid updates. Hence, we need the id to identify changes as part of each tab
     if (!currentFile.value) return
+
+    // Check if document is locked and not in source code mode
+    if (currentFile.value.isLocked && !sourceCode.value) {
+      notice.notify({
+        title: t('editor.documentLocked'),
+        message: t('editor.documentLockedMessage'),
+        type: 'warning',
+        duration: 3000
+      })
+      // Restore the original content to prevent changes
+      if (currentFile.value.markdown !== editor.value.getMarkdown()) {
+        editor.value.setMarkdown(currentFile.value.markdown)
+      }
+      return
+    }
+
     const { id } = currentFile.value
     if (id) {
       editorStore.LISTEN_FOR_CONTENT_CHANGE(

@@ -949,6 +949,12 @@ export const useEditorStore = defineStore('editor', {
       window.electron.ipcRenderer.on('mt::switch-tab-by-file_path', (_, filePath) => {
         this.SWITCH_TAB_BY_FILEPATH(filePath)
       })
+      window.electron.ipcRenderer.on('mt::toggle-tab-lock', () => {
+        this.TOGGLE_FILE_LOCK()
+      })
+      bus.on('mt::toggle-tab-lock', () => {
+        this.TOGGLE_FILE_LOCK()
+      })
     },
 
     FORCE_CLOSE_TAB(file: IFileState): void {
@@ -1117,6 +1123,20 @@ export const useEditorStore = defineStore('editor', {
     RENAME_FILE(file: IFileState): void {
       this.UPDATE_CURRENT_FILE(file)
       bus.emit('rename')
+    },
+
+    /**
+     * Toggle the lock state of a document. When locked, the document can only be edited in source code mode.
+     */
+    TOGGLE_FILE_LOCK(tabId?: string): void {
+      const id = tabId ?? this.currentFile?.id
+      if (!id) return
+
+      const tab = this.tabs.find((t) => t.id === id)
+      if (tab) {
+        tab.isLocked = !tab.isLocked
+        debouncedSendBufferedState()
+      }
     },
 
     // Direction is a boolean where false is left and true right.

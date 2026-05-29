@@ -681,6 +681,13 @@ const commands: CommandDescriptor[] = [
     execute: async() => {
       bus.emit('mt::tabs-cycle-left')
     }
+  },
+  {
+    id: 'tabs.toggle-lock',
+    description: getCommandDescriptionById('tabs.toggle-lock'),
+    execute: async() => {
+      bus.emit('mt::toggle-tab-lock')
+    }
   }
 ]
 

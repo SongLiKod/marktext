@@ -21,6 +21,12 @@ const switchTabByIndex = (win: MaybeWin, index: number): void => {
   }
 }
 
+const toggleTabLock = (win: MaybeWin): void => {
+  if (win && win.webContents) {
+    win.webContents.send('mt::toggle-tab-lock')
+  }
+}
+
 export const loadTabCommands = (commandManager: CommandManager): void => {
   commandManager.add(COMMANDS.TABS_CYCLE_BACKWARD, switchToLeftTab as CommandCallback)
   commandManager.add(COMMANDS.TABS_CYCLE_FORWARD, switchToRightTab as CommandCallback)
@@ -46,4 +52,5 @@ export const loadTabCommands = (commandManager: CommandManager): void => {
     switchTabByIndex(win, 8)) as CommandCallback)
   commandManager.add(COMMANDS.TABS_SWITCH_TO_TENTH, ((win: MaybeWin) =>
     switchTabByIndex(win, 9)) as CommandCallback)
+  commandManager.add(COMMANDS.TABS_TOGGLE_LOCK, toggleTabLock as CommandCallback)
 }

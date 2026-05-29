@@ -1030,7 +1030,8 @@
       "switchToSeventh": "Switch to Seventh",
       "switchToEighth": "Switch to Eighth",
       "switchToNinth": "Switch to Ninth",
-      "switchToTenth": "Switch to Tenth"
+      "switchToTenth": "Switch to Tenth",
+      "toggleLock": "Toggle Document Lock"
     },
     "docs": {
       "userGuide": "User Guide",
@@ -1113,7 +1114,9 @@
       "exportSuccessTitle": "Exported successfully",
       "exportSuccessMessage": "Exported \"{name}\" successfully!",
       "fileRemovedOnDisk": "\"{name}\" has been removed on disk.",
-      "fileChangedOnDisk": "\"{name}\" has been changed on disk. Do you want to reload it?"
+      "fileChangedOnDisk": "\"{name}\" has been changed on disk. Do you want to reload it?",
+      "documentLocked": "Document Locked",
+      "documentLockedMessage": "Document is locked. Only editable in source code mode."
     }
   },
   "spellchecker": {

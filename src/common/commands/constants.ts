@@ -89,6 +89,7 @@ const COMMANDS = Object.freeze({
   TABS_SWITCH_TO_SIXTH: 'tabs.switchToSixth',
   TABS_SWITCH_TO_TENTH: 'tabs.switchToTenth',
   TABS_SWITCH_TO_THIRD: 'tabs.switchToThird',
+  TABS_TOGGLE_LOCK: 'tabs.toggle-lock',
 
   VIEW_COMMAND_PALETTE: 'view.command-palette',
   VIEW_DEV_RELOAD: 'view.dev-reload',

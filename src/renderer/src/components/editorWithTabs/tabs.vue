@@ -12,12 +12,19 @@
           v-for="file of tabs"
           :key="file.id"
           :title="file.pathname"
-          :class="{ active: currentFile?.id === file.id, unsaved: !file.isSaved }"
+          :class="{ active: currentFile?.id === file.id, unsaved: !file.isSaved, locked: file.isLocked }"
           :data-id="file.id"
           @click.stop="selectFile(file)"
           @click.middle="closeTab(file.id)"
           @contextmenu.prevent="handleContextMenu($event, file)"
         >
+          <el-icon
+            v-if="file.isLocked"
+            class="lock-icon"
+            :size="12"
+          >
+            <Lock />
+          </el-icon>
           <span>{{ file.filename }}</span>
           <span class="unsaved-dot" />
           <el-icon
@@ -48,7 +55,7 @@ import { useLayoutStore } from '@/store/layout'
 import { storeToRefs } from 'pinia'
 import autoScroll from 'dom-autoscroller'
 import dragula from 'dragula'
-import { Plus, Close } from '@element-plus/icons-vue'
+import { Plus, Close, Lock } from '@element-plus/icons-vue'
 import { showContextMenu } from '../../contextMenu/tabs'
 import bus from '../../bus'
 import type { IFileState } from '@shared/types/files'
@@ -239,6 +246,12 @@ onBeforeUnmount(() => {
 
 .close-icon:hover {
   color: var(--focusColor);
+}
+
+.lock-icon {
+  margin-right: 4px;
+  color: var(--editorColor50);
+  flex-shrink: 0;
 }
 
 .editor-tabs {
